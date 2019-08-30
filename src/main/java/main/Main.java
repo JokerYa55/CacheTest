@@ -71,16 +71,17 @@ public class Main {
 
         manager.defineConfiguration("test", builder.build());
         Cache<Object, Object> cache = manager.getCache("test");
-        for (int i = 1; i < 10000; i++) {
-            cache.put("test_" + i, "1_" + i);
-        }
+//        for (int i = 1; i < 10000; i++) {
+//            cache.put("test_" + i, "1_" + i, 20, TimeUnit.SECONDS);
+//        }
         KeyBean key = new KeyBean();
         key.setId(UUID.randomUUID().toString());
 
         KeyData data = new KeyData();
         data.setData("test");
-        cache.put("test_500", data, 10, TimeUnit.SECONDS);
-        System.out.println(cache.get("test_500"));
+        //cache.put("test_500", data, 10, TimeUnit.SECONDS);
+        System.out.println(cache.get("test_555"));
+        System.out.println("cache = " + cache.size());
         //cache.clear();
         //manager.stop();
         TimeUnit.SECONDS.sleep(30);
