@@ -75,12 +75,12 @@ public class Main {
         manager.defineConfiguration("test", builder.build());
         Cache<Object, Object> cache = manager.getCache("test");
         System.out.println("Init");
-        for (int i = 1; i < 10000; i++) {
-            //KeyData data = new KeyData();
-            //data.setData("test_" + i);
-            CaptchaResult captcha = CaptchaFactory.generate(CaptchaType.COLOR);
-            cache.put(captcha.getCode(), captcha.getCaptcha(), 20, TimeUnit.MINUTES);
-        }
+//        for (int i = 1; i < 10000; i++) {
+//            //KeyData data = new KeyData();
+//            //data.setData("test_" + i);
+//            CaptchaResult captcha = CaptchaFactory.generate(CaptchaType.COLOR);
+//            cache.put(captcha.getCode(), captcha.getCaptcha(), 20, TimeUnit.MINUTES);
+//        }
         KeyBean key = new KeyBean();
         key.setId(UUID.randomUUID().toString());
 
