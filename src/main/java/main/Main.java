@@ -7,6 +7,9 @@ package main;
 
 import beans.KeyBean;
 import beans.KeyData;
+import captcha.CaptchaFactory;
+import captcha.CaptchaResult;
+import captcha.CaptchaType;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import org.infinispan.Cache;
@@ -73,9 +76,10 @@ public class Main {
         Cache<Object, Object> cache = manager.getCache("test");
         System.out.println("Init");
         for (int i = 1; i < 10_000; i++) {
-            KeyData data = new KeyData();
-            data.setData("test_" + i);
-            cache.put("test_" + i, data, 20, TimeUnit.SECONDS);
+            //KeyData data = new KeyData();
+            //data.setData("test_" + i);
+            CaptchaResult captcha = CaptchaFactory.generate(CaptchaType.COLOR);
+            cache.put(captcha.getCode(), captcha.getCaptcha(), 20, TimeUnit.SECONDS);
         }
         KeyBean key = new KeyBean();
         key.setId(UUID.randomUUID().toString());
