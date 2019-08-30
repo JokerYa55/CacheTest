@@ -6,6 +6,7 @@
 package beans;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  *
@@ -14,8 +15,12 @@ import java.io.Serializable;
 public class KeyData implements Serializable {
 
     private String data;
+    private final HashMap<Integer, Object> dataMap = new HashMap<>();
 
     public KeyData() {
+        for (int i = 0; i < 5000; i++) {
+            this.dataMap.put(i, "test_" + i);
+        }
     }
 
     public String getData() {
@@ -26,9 +31,13 @@ public class KeyData implements Serializable {
         this.data = data;
     }
 
+    public HashMap<Integer, Object> getDataMap() {
+        return dataMap;
+    }
+
     @Override
     public String toString() {
-        return "KeyData{" + "data=" + data + '}';
+        return "KeyData{" + "data=" + data + ", dataMap=" + dataMap + '}';
     }
 
 }
