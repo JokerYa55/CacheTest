@@ -18,7 +18,7 @@ public class KeyData implements Serializable {
     private final HashMap<Integer, Object> dataMap = new HashMap<>();
 
     public KeyData() {
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 100; i++) {
             this.dataMap.put(i, "test_" + i);
         }
     }
