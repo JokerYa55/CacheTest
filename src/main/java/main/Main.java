@@ -5,6 +5,8 @@
  */
 package main;
 
+import beans.KeyBean;
+import beans.KeyData;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import org.infinispan.Cache;
@@ -15,6 +17,7 @@ import static org.infinispan.eviction.EvictionStrategy.LIRS;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.persistence.jdbc.configuration.JdbcStringBasedStoreConfigurationBuilder;
+import org.jgroups.util.UUID;
 
 /**
  *
@@ -67,11 +70,16 @@ public class Main {
                 .driverClass("org.postgresql.Driver");
         
         manager.defineConfiguration("test", builder.build());
-        Cache<Object, Object> cache = manager.getCache("test");
+        Cache<KeyBean, KeyData> cache = manager.getCache("test");
 //        for (int i = 1; i < 10000; i++) {
 //            cache.put("test_" + i, "1_" + i);
 //        }
-        cache.put("test_500", "1_500", 10, TimeUnit.SECONDS);
+        KeyBean key = new KeyBean();
+        key.setId(UUID.randomUUID().toString());
+        
+        KeyData data = new KeyData();
+        data.setData("test");
+        cache.put(key, data, 10, TimeUnit.SECONDS);
         System.out.println(cache.get("test_500"));
         //cache.clear();
         //manager.stop();
