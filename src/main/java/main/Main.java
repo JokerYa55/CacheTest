@@ -28,7 +28,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 //        EmbeddedCacheManager manager = new DefaultCacheManager();
 //        manager.defineConfiguration("custom-cache", new ConfigurationBuilder()
 //                .eviction().strategy(LIRS).maxEntries(10)
@@ -48,8 +48,8 @@ public class Main {
 
         //EmbeddedCacheManager manager = new DefaultCacheManager();
         GlobalConfigurationBuilder global = GlobalConfigurationBuilder.defaultClusteredBuilder();
-                global.transport().clusterName("cluster");
-                DefaultCacheManager manager = new DefaultCacheManager(global.build());
+        global.transport().clusterName("cluster");
+        DefaultCacheManager manager = new DefaultCacheManager(global.build());
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.persistence().addStore(JdbcStringBasedStoreConfigurationBuilder.class)
                 .fetchPersistentState(false)
@@ -61,29 +61,32 @@ public class Main {
                 .createOnStart(true)
                 .tableNamePrefix("cache")
                 .idColumnName("ID_COLUMN").idColumnType("TEXT")
-                .dataColumnName("DATA_COLUMN").dataColumnType("TEXT")
+                .dataColumnName("DATA_COLUMN").dataColumnType("bytea")
                 .timestampColumnName("TIMESTAMP_COLUMN").timestampColumnType("bigint")
                 .connectionPool()
                 .connectionUrl("jdbc:postgresql://localhost:5432/orders")
                 .username("postgres")
                 .password("123")
                 .driverClass("org.postgresql.Driver");
-        
+
         manager.defineConfiguration("test", builder.build());
-        Cache<KeyBean, KeyData> cache = manager.getCache("test");
-//        for (int i = 1; i < 10000; i++) {
-//            cache.put("test_" + i, "1_" + i);
-//        }
+        Cache<Object, Object> cache = manager.getCache("test");
+        for (int i = 1; i < 10000; i++) {
+            cache.put("test_" + i, "1_" + i);
+        }
         KeyBean key = new KeyBean();
         key.setId(UUID.randomUUID().toString());
-        
+
         KeyData data = new KeyData();
         data.setData("test");
-        cache.put(key, data, 10, TimeUnit.SECONDS);
+        cache.put("test_500", data, 10, TimeUnit.SECONDS);
         System.out.println(cache.get("test_500"));
         //cache.clear();
         //manager.stop();
-        
+        TimeUnit.SECONDS.sleep(30);
+        System.out.println("End sleep");
+        System.out.println(cache.get("test_500"));
+
     }
 
 }
