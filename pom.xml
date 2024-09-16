@@ -19,7 +19,7 @@
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-cachestore-jdbc</artifactId>
-            <version>9.4.16.Final</version>
+            <version>14.0.25.Final</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
